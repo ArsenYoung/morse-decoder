@@ -37,9 +37,56 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
-function decode(expr) {
-    // write your solution here
-}
+function getLettersInBinary(expr) {
+    let arr = [];
+    for (let index = 0, step = 10; index < expr.length; index += step) {
+        arr.push(expr.substring(index, index + step));
+    }
+    return arr;
+  }
+  
+  function getLettersInMorse(arrBinaryLetters) {
+    let arrMorseLetters = [];
+    let dotCode = '10';
+    let dashCode = '11';
+    let spaceCode = '**********';
+    for (let index = 0; index < arrBinaryLetters.length; index++) {
+      if (arrBinaryLetters[index] == spaceCode) {
+        arrMorseLetters.push(' ');
+      } else {
+        let morseLetter = '';
+        for (let kIndex = 0, step = 2; kIndex < arrBinaryLetters[index].length; kIndex += step) {
+          let twoElemStr = arrBinaryLetters[index].substring(kIndex, kIndex + step);
+          if (twoElemStr == dotCode) {
+            morseLetter += '.';
+          } else if (twoElemStr == dashCode) {
+            morseLetter += '-';
+          }
+        }
+        arrMorseLetters.push(morseLetter);
+      }
+    }
+    return arrMorseLetters;
+  }
+  
+  function getAlphabeticalString(arrMorseLetters) {
+    let resultStr = '';
+    for (let index = 0; index < arrMorseLetters.length; index++) {
+      if (arrMorseLetters[index] == ' ') {
+        resultStr += arrMorseLetters[index];
+      } else {
+        resultStr += MORSE_TABLE[arrMorseLetters[index]];
+      }
+    }
+    return resultStr;
+  }
+  
+  function decode(expr) {
+    let arrBinaryLetters = getLettersInBinary(expr);
+    let arrMorseLetters = getLettersInMorse(arrBinaryLetters);
+    let result = getAlphabeticalString(arrMorseLetters);
+    return result;
+  }
 
 module.exports = {
     decode
